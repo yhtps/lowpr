@@ -1,0 +1,109 @@
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.lib.ObjectLoader
+import org.eclipse.jgit.lib.ObjectReader
+import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.treewalk.CanonicalTreeParser
+import org.eclipse.jgit.treewalk.TreeWalk
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
+    }
+}
+
+
+
+task writeChangelog {
+    def chnagelogTemplate="""
+    # Changelog
+
+    ---
+
+    ### 
+
+    #### **\\+** : 생성
+
+    #### **\\*** : 수정
+
+    #### **\\-** : 삭제
+    """
+    group 'codegen'
+    doLast {
+        def version ="## [${project.version}]"
+        def git = Git.open(project.rootDir)
+        def changelogFile = new File(project.rootDir, "CHANGELOG.md")
+        if (!changelogFile.exists()||!changelogFile.readLines().toString().contains("##")){
+            println "aa"
+            changelogFile.createNewFile()
+            changelogFile.write(chnagelogTemplate.trim())
+        }
+        def changelog="${version}\n\n"
+        Iterable<RevCommit> commits = git.log().setMaxCount(50).call()
+        commits.each{commit->
+            ObjectId treeId = commit.tree.getId()
+            ObjectReader reader = git.repository.newObjectReader()
+            ObjectLoader loader = reader.open(treeId)
+            def tree = loader.bytes
+            TreeWalk treeWalk = TreeWalk.forPath(git.repository, "build.gradle", treeId)
+                if (treeWalk != null) {
+                    loader = reader.open(treeWalk.getObjectId(0))
+                    def buildGradle = new String(loader.bytes, "UTF-8")
+                    if (buildGradle.contains("version = '${project.version}'")) {
+                            changelog += "- ${commit.getShortMessage()}\n\n"
+                        if (commit.getParentCount() > 0) {
+                            RevCommit parentCommit = commit.getParent(0)
+
+                            CanonicalTreeParser oldTrees = new CanonicalTreeParser()
+                            oldTrees.reset(reader, parentCommit.getTree().getId())
+                            CanonicalTreeParser newTrees = new CanonicalTreeParser()
+                            newTrees.reset(reader, commit.getTree().getId())
+                            git.diff()
+                                    .setOldTree(oldTrees)
+                                    .setNewTree(newTrees)
+                                    .call()
+                                    .forEach { diffs ->
+                                            changelog += "${getDetail(diffs)}\n\n"
+                                    }
+                        }
+                    }
+                }
+            }
+        if (changelogFile.exists()) {
+            def changelogLines = changelogFile.readLines()
+            def versionLineIndex = changelogLines.findIndexOf { line -> line.contains("${version}") }
+            if (versionLineIndex >= 0) {
+                def startIndex = versionLineIndex
+                def endIndex = changelogLines.findIndexOf(startIndex + 1) { line -> line.startsWith("##") }
+                if (endIndex == -1) {
+                    endIndex = changelogLines.size()
+                }
+                changelogLines.subList(startIndex, endIndex).clear()
+                changelogLines.add(startIndex, changelog)
+            } else {
+                changelogLines.add(4, changelog)
+            }
+            changelogFile.write(changelogLines.join("\n"))
+        } 
+        println "$changelog"
+        git.close()
+    }
+}
+
+def getDetail(diffs) {
+    def type=diffs.getChangeType()
+    switch (type) {
+        case "ADD":
+            return "  - **\\+** ${diffs.getNewPath()}"
+        case "DELETE":
+            return "  - **\\-** ~~${diffs.getOldPath()}~~"
+        case "MODIFY":
+            return "  - **\\*** ${diffs.getNewPath()}"
+        default:
+            return "${type} ${diffs.getNewPath()}"
+    }
+}

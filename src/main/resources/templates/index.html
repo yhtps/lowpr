@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html
+  lang="ko-KR"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:replace="~{thymeleaf/layout :: common(~{::head},~{::main})}"
+>
+  <head>
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <title>구매가격 기록일지 - lowpr</title>
+  </head>
+  <body>
+    <main>최근 기록되거나 갱신된 물품들 20개</main>
+  </body>
+</html>

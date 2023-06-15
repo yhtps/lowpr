@@ -1,0 +1,73 @@
+body {
+  background-color: #555555;
+  color: #f1f1f1;
+}
+
+header {
+  background-color: #777777;
+  color: #f1f1f1;
+}
+
+main {
+  background-color: #666666;
+  color: #f1f1f1;
+}
+
+footer {
+  background-color: #777777;
+  color: #f1f1f1;
+}
+
+body.light-theme {
+  background-color: #edf7e0;
+  color: #333;
+}
+
+.light-theme header {
+  background-color: #cde6c3;
+  color: #333;
+}
+
+.light-theme main {
+  background-color: #e6f0d9;
+  color: #333;
+}
+
+.light-theme footer {
+  background-color: #cde6c3;
+  color: #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #f1f1f1;
+}
+
+.light-theme h1,
+.light-theme h2,
+.light-theme h3,
+.light-theme h4,
+.light-theme h5,
+.light-theme h6 {
+  color: #333;
+}
+
+p,
+a,
+span,
+li,
+td {
+  color: #cccccc;
+}
+
+.light-theme p,
+.light-theme a,
+.light-theme span,
+.light-theme li,
+.light-theme td {
+  color: #555555;
+}

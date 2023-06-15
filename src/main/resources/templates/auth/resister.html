@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html
+  lang="ko-KR"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:replace="~{thymeleaf/layout :: auth(~{::head},~{::main})}"
+>
+  <head>
+    <link rel="stylesheet" th:href="@{/css/auth/resister.css}" />
+    <title>회원가입 - lowpr</title>
+  </head>
+  <body>
+    <main>회원가입페이지</main>
+  </body>
+</html>

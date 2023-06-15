@@ -1,0 +1,13 @@
+spring:
+  web:
+    locale: ko_KR
+  output:
+    ansi:
+      enabled: always
+  profiles:
+    group:
+      dev:
+        - jpaDev
+        - mariadbDev
+    active:
+      - dev

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<th:block th:fragment="common(resources,main)">
+  <head>
+    <th:block th:replace="~{/thymeleaf/fragment/head :: default}" />
+    <script defer th:src="@{/js/common/default.js}"></script>
+    <th:block th:replace="${resources}" />
+    <!--/*-->
+    <title>일반 레이아웃</title>
+    <!--*/-->
+  </head>
+  <body>
+    <th:block th:replace="~{/thymeleaf/fragment/header :: common}" />
+    <th:block th:replace="${main}" />
+    <th:block th:replace="~{/thymeleaf/fragment/footer :: common}" />
+  </body>
+</th:block>
+
+<th:block th:fragment="admin(resources,main)">
+  <head>
+    <th:block th:replace="~{/thymeleaf/fragment/head :: default}" />
+    <th:block th:replace="${resources}" />
+    <!--/*-->
+    <title>관리자 레이아웃</title>
+    <!--*/-->
+  </head>
+  <body>
+    <th:block th:replace="~{/thymeleaf/fragment/header :: admin}" />
+    <th:block th:replace="${main}" />
+  </body>
+</th:block>
+
+<th:block th:fragment="auth(resources,main)">
+  <head>
+    <th:block th:replace="~{/thymeleaf/fragment/head :: default}" />
+    <th:block th:replace="${resources}" />
+    <!--/*-->
+    <title>인증 레이아웃</title>
+    <!--*/-->
+  </head>
+  <body>
+    <th:block th:replace="~{/thymeleaf/fragment/header :: auth}" />
+    <th:block th:replace="${main}" />
+    <th:block th:replace="~{/thymeleaf/fragment/footer :: common}" />
+  </body>
+</th:block>
