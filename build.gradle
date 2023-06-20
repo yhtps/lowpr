@@ -1,14 +1,19 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.1.0'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.springframework.cloud.contract' version '4.0.3'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+  id 'java'
+  id 'org.springframework.boot' version '3.1.0'
+  id 'io.spring.dependency-management' version '1.1.0'
+  id 'org.hibernate.orm' version '6.2.2.Final'
+  id 'org.graalvm.buildtools.native' version '0.9.20'
+  id 'org.springframework.cloud.contract' version '4.0.3'
+  id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.github.yhtps'
 version = '0.0.1'
-sourceCompatibility = '17'
+
+java {
+  sourceCompatibility = '17'
+}
 
 configurations {
 	compileOnly {
@@ -48,29 +53,38 @@ dependencies {
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
-	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+  testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
 }
 
 tasks.named('contractTest') {
-	useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 tasks.named('test') {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+  outputs.dir snippetsDir
+  useJUnitPlatform()
 }
 
 tasks.named('asciidoctor') {
-	inputs.dir snippetsDir
-	dependsOn test
+  inputs.dir snippetsDir
+  dependsOn test
+}
+
+hibernate {
+  enhancement {
+    lazyInitialization true
+    dirtyTracking true
+    associationManagement true
+  }
 }
 
 contracts {
