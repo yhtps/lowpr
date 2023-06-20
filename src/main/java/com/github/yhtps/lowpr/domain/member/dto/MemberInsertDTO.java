@@ -2,9 +2,15 @@ package com.github.yhtps.lowpr.domain.member.dto;
 
 import java.time.LocalDate;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
 public class MemberInsertDTO {
 
 	private String email;

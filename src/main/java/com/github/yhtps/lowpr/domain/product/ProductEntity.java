@@ -24,6 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -62,17 +63,6 @@ public class ProductEntity extends BaseEntityBody {
 	private MemberEntity member;
 
 	@ManyToMany
-	private List<CategoryEntity> categories = new ArrayList<>();
-
-	@Builder
-	protected ProductEntity(long no, String name, String description, ProdUnit unit, int quantity, int ea, MemberEntity member) {
-		this.no = no;
-		this.name = name;
-		this.description = description;
-		this.unit = unit;
-		this.quantity = quantity;
-		this.ea = ea;
-		this.member = member;
-	}
+	private final List<CategoryEntity> categories = new ArrayList<>();
 
 }

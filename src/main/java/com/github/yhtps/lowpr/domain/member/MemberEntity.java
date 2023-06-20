@@ -26,10 +26,13 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -96,17 +99,9 @@ public class MemberEntity extends BaseEntityBody {
 	@JoinTable(name = "AttendanceMember", joinColumns = @JoinColumn(name = "memberNo"), inverseJoinColumns = @JoinColumn(name = "attendanceNo"))
 	private final List<AttendanceEntity> attendances = new ArrayList<>();
 
-	@Builder
-	protected MemberEntity(long no, String email, String password, String nickname, String name, String telNum, LocalDate birth,
-			byte gender) {
-		this.no = no;
-		this.email = email;
-		this.password = password;
-		this.nickname = nickname;
-		this.name = name;
-		this.telNum = telNum;
-		this.birth = birth;
-		this.gender = gender;
+	public MemberEntity addRole(MemberRole role) {
+		roles.add(role);
+		return this;
 	}
 
 }

@@ -1,25 +1,28 @@
 package com.github.yhtps.lowpr.domain.comment.dto;
 
-import com.github.yhtps.lowpr.domain.comment.CommentEntity;
-import com.github.yhtps.lowpr.domain.member.MemberEntity;
-import com.github.yhtps.lowpr.domain.post.PostEntity;
-import com.github.yhtps.lowpr.domain.product.ProductEntity;
+import java.time.LocalDateTime;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentDto {
 
 	private long no;
 
 	private String content;
 
-	private CommentEntity parentComment;
+	private String nickname;
 
-	private MemberEntity member;
+	private LocalDateTime createdDate;
 
-	private PostEntity post;
+	private LocalDateTime updatedDate;
 
-	private ProductEntity product;
+	private boolean hide;
 
 }

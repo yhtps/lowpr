@@ -15,10 +15,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -39,12 +42,5 @@ public class CategoryEntity {
 
 	@ManyToMany
 	private final List<ProductEntity> products = new ArrayList<>();
-
-	@Builder
-	protected CategoryEntity(long no, String name, CategoryEntity parentCategory) {
-		this.no = no;
-		this.name = name;
-		this.parentCategory = parentCategory;
-	}
 
 }

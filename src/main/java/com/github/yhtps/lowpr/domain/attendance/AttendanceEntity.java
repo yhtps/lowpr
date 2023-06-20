@@ -18,10 +18,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -43,14 +46,5 @@ public class AttendanceEntity extends BaseEntityBody {
 
 	@ManyToMany(mappedBy = "attendances")
 	private final List<MemberEntity> members = new ArrayList<>();
-
-	@Builder
-	protected AttendanceEntity(long no, LocalDate date, LocalTime onTime, LocalTime offTime, AttStatus status) {
-		this.no = no;
-		this.date = date;
-		this.onTime = onTime;
-		this.offTime = offTime;
-		this.status = status;
-	}
 
 }

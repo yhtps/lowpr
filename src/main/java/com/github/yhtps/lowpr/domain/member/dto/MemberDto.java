@@ -1,10 +1,17 @@
 package com.github.yhtps.lowpr.domain.member.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberDto {
 
 	private long no;
@@ -22,5 +29,11 @@ public class MemberDto {
 	private LocalDate birth;
 
 	private byte gender;
+
+	private LocalDateTime createdDate;
+
+	private LocalDateTime updatedDate;
+
+	private boolean hide;
 
 }

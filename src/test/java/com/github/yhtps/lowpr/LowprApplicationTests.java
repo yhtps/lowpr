@@ -27,29 +27,34 @@ class LowprApplicationTests {
 				"향", "울", "련");
 		Collections.shuffle(familyName);
 		Collections.shuffle(names);
-		StringBuilder fullName = new StringBuilder(familyName.get(0));
-		int nameLength = (Math.random() < 0.9) ? 2 : (int) (Math.random() * 4) + 1;
+		final int nameLength = Math.random() < 0.9 ? 2 : (int) (Math.random() * 4) + 1;
+		final StringBuilder fullName = new StringBuilder(familyName.get(0));
 		fullName.append(String.join("", names.subList(0, nameLength)));
 		return fullName.toString();
 	}
 
-	public String krPhone() {
-		final List<String> pNum = Arrays.asList("010", "011", "012", "013");
-		Collections.shuffle(pNum);
-		return pNum.get(0);
+	private String koreanMobilePhoneNumber() {
+		final StringBuilder mobilePhoneNumber = new StringBuilder("010");
+		mobilePhoneNumber	.append(String.format("%04d", (int) (Math.random() * 10000)))
+											.append(String.format("%04d", (int) (Math.random() * 10000)));
+		return mobilePhoneNumber.toString();
 	}
 
-	public String phoneNum() {
-		return (int) (Math.random() * 8999) + 1000 + "";
+	private String toHyphenatedNumber(String koreanMobilePhoneNumber) {
+		if (!koreanMobilePhoneNumber.matches("\\d+")) throw new IllegalArgumentException("8자리나 11자리의 숫자 조합의 문자열의 인자만 받을수 있습니다");
+		return switch (koreanMobilePhoneNumber.length()) {
+		case 8 -> String.format("010-%s-%s", koreanMobilePhoneNumber.substring(0, 4), koreanMobilePhoneNumber.substring(4));
+		case 11 -> String.format("%s-%s-%s", koreanMobilePhoneNumber.substring(0, 3), koreanMobilePhoneNumber.substring(3, 7),
+				koreanMobilePhoneNumber.substring(7));
+		default -> throw new IllegalArgumentException("8자리나 11자리의 숫자 조합의 문자열의 인자만 받을수 있습니다");
+		};
 	}
 
 	@Test
-	void contextLoads() {
-		System.out.println(koreanName());
-		System.out.println(koreanName());
-		System.out.println(koreanName());
-		System.out.println(koreanName());
-		System.out.println(koreanName());
+	void randomKoreanName() {
+		for (int i = 0; i < 99; i++) {
+			System.out.println(i + 1 + "번째 이름: " + koreanName());
+		}
 	}
 
 }

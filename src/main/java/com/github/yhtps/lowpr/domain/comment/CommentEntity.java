@@ -23,6 +23,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -44,7 +45,7 @@ public class CommentEntity extends BaseEntityBody {
 	private CommentEntity parentComment;
 
 	@OneToMany(mappedBy = "parentComment", cascade = CascadeType.DETACH)
-	private List<CommentEntity> childComments = new ArrayList<>();
+	private final List<CommentEntity> childComments = new ArrayList<>();
 
 	@ManyToOne
 	private MemberEntity member;
@@ -57,16 +58,5 @@ public class CommentEntity extends BaseEntityBody {
 	 */
 	@ManyToOne
 	private ProductEntity product;
-
-	@Builder
-	protected CommentEntity(long no, String content, CommentEntity parentComment, MemberEntity member, PostEntity post,
-			ProductEntity product) {
-		this.no = no;
-		this.content = content;
-		this.parentComment = parentComment;
-		this.member = member;
-		this.post = post;
-		this.product = product;
-	}
 
 }
